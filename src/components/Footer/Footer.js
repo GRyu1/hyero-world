@@ -34,10 +34,10 @@ export default function Footer() {
     <footer className="footer">
       <Container style={{marginTop:"0px"}}>
         <Row>
-          <Col md="4">
+          <Col md="3">
             <h1 className="title">Hyero-world</h1>
           </Col>
-          <Col md="8">
+          <Col md="7">
             <Nav style={{display:"flex"}} >
               <NavItem style={{margin:"10px"}}>
                 <NavLink to="/" tag={Link}>
@@ -62,7 +62,7 @@ export default function Footer() {
             </Nav>
           </Col>
 {/*       
-          <Col md="3">
+          <Col md="2">
             <h3 className="title">Follow us:</h3>
             <div className="btn-wrapper profile">
               <Button

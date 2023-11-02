@@ -15,8 +15,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 // reactstrap components
 import {
   Button,
@@ -34,18 +34,34 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
+  Modal,
+  Card,
+  Form,
+  CardHeader,
+  CardImg,
+  CardTitle,
+  CardBody,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  CardFooter,
+  Input,
 } from "reactstrap";
 
+
 export default function IndexNavbar() {
+  const [modalLogin , setModalLogin] = useState(false);
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const [collapseOut, setCollapseOut] = React.useState("");
   const [color, setColor] = React.useState("navbar-transparent");
+  const navigate = useNavigate();
   React.useEffect(() => {
     window.addEventListener("scroll", changeColor);
     return function cleanup() {
       window.removeEventListener("scroll", changeColor);
     };
   }, []);
+  
   const changeColor = () => {
     if (
       document.documentElement.scrollTop > 99 ||
@@ -75,7 +91,12 @@ export default function IndexNavbar() {
       .scrollIntoView({ behavior: "smooth" });
   };
   return (
-    <Navbar className={"fixed-top "} color-on-scroll="100" expand="lg" style={{backgroundColor:"black"}}>
+    <Navbar
+      className={"fixed-top "}
+      color-on-scroll="100"
+      expand="lg"
+      style={{ backgroundColor: "rgba(0,0,0,0.9)" }}
+    >
       <Container>
         <div className="navbar-translate">
           <NavbarBrand to="/" tag={Link} id="navbar-brand">
@@ -120,19 +141,25 @@ export default function IndexNavbar() {
             <NavItem className="p-0">
               <NavLink
                 data-placement="bottom"
-                href="https://twitter.com/CreativeTim"
+                className="nav-link-btn"
+                onClick={() => {
+                  navigate("/");
+                }}
                 rel="noopener noreferrer"
                 target="_blank"
                 title="Introduction about me"
               >
-                <i className="tim-icons icon-single-02"/>
+                <i className="tim-icons icon-single-02" />
                 <p className="d-lg-none d-xl-none">Introduction</p>
               </NavLink>
             </NavItem>
             <NavItem className="p-0">
               <NavLink
+                className="nav-link-btn"
+                onClick={() => {
+                  navigate("/posts");
+                }}
                 data-placement="bottom"
-                href="https://www.facebook.com/CreativeTim"
                 rel="noopener noreferrer"
                 target="_blank"
                 title="Link to Post-List"
@@ -144,7 +171,7 @@ export default function IndexNavbar() {
             <NavItem className="p-0">
               <NavLink
                 data-placement="bottom"
-                href="https://www.instagram.com/CreativeTimOfficial"
+                href="https://hyeroworld.notion.site/hyeroworld/968fbeaa9cd048268c64e2fae053cf0b"
                 rel="noopener noreferrer"
                 target="_blank"
                 title="Link to Notion"
@@ -153,12 +180,14 @@ export default function IndexNavbar() {
                 <p className="d-lg-none d-xl-none">Notion</p>
               </NavLink>
             </NavItem>
-            
+
             <NavItem>
               <Button
                 className="nav-link d-none d-lg-block"
-                onClick={scrollToDownload}
                 color="primary"
+                data-target="#loginModal"
+                data-toggle="modal"
+                onClick={()=>setModalLogin((prev)=>!prev)}
               >
                 <i className="tim-icons icon-lock-circle" /> Login
               </Button>
@@ -166,6 +195,81 @@ export default function IndexNavbar() {
           </Nav>
         </Collapse>
       </Container>
+      {/* Login Modal */}
+      <Modal
+        isOpen={modalLogin}
+        toggle={()=>setModalLogin((prev)=>!prev)}
+        modalClassName="modal-login"
+      >
+        <Card className="card-login" style={{marginBottom:"0px", border:"1px solid rgba(225, 78, 202, 0.8)"}}>
+          <Form action="" className="form" method="">
+            <CardHeader>
+              <CardTitle tag="h4">Login</CardTitle>
+              <button
+                aria-label="Close"
+                className="close"
+                data-dismiss="modal"
+                type="button"
+                onClick={()=>setModalLogin((prev)=>!prev)}
+              >
+                <i className="tim-icons icon-simple-remove" />
+              </button>
+            </CardHeader>
+            <CardBody>
+              <InputGroup className="input-lg">
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="tim-icons icon-single-02" />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input placeholder="아이디" type="text" />
+              </InputGroup>
+              <InputGroup className="input-lg">
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="tim-icons icon-caps-small" />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input placeholder="비밀번호" type="password" />
+              </InputGroup>
+            </CardBody>
+            <CardFooter className="text-center">
+              <Button
+                block
+                className="btn-round"
+                color="primary"
+                href="#pablo"
+                onClick={(e) => e.preventDefault()}
+                size="lg"
+              >
+                Login
+              </Button>
+            </CardFooter>
+            <div className="pull-left ml-3 mb-3">
+              <h6>
+                <a
+                  className="link footer-link"
+                  href="#pablo"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  Login With Kakao
+                </a>
+              </h6>
+            </div>
+            <div className="pull-right mr-3 mb-3">
+              <h6>
+                <a
+                  className="link footer-link"
+                  href="#pablo"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  Need Help?
+                </a>
+              </h6>
+            </div>
+          </Form>
+        </Card>
+      </Modal>
     </Navbar>
   );
 }
