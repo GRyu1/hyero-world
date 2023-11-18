@@ -1,5 +1,10 @@
-import React, { useEffect } from "react";
+import axios from "axios";
+import PostThumnail from "components/Post/PostThumnail";
+import { PostsContext } from "contexts/PostsContext";
+import { error } from "jquery";
+import React, { useContext, useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Card,
@@ -21,14 +26,60 @@ import {
 } from "reactstrap";
 import bigChartData from "variables/charts.js";
 
+const PostsPerPage = 12;
+
 const Posts = () => {
+  const navigate = useNavigate();
+  const {
+    states : {postList,totalNum,currentPage,category},
+    actions : {setPostList,setTotalNum,setCurrentPage,getPost,getPosts,getTotalNum,setCategory}
+} = useContext(PostsContext);
+  
+
   useEffect(() => {
     document.body.classList.toggle("landing-page");
-    // Specify how to clean up after this effect:
+
+    getTotalNum()
+    .then((resp)=>{
+      setTotalNum(resp.data);
+    })
+    .catch((err)=>{
+      console.log(err);
+    });
+
+    getPosts(currentPage)
+    .then((resp)=>{
+      setPostList(resp.data);
+    })
+    .catch((err)=>{
+      console.log(err);
+    });    
+
     return function cleanup() {
       document.body.classList.toggle("landing-page");
     };
   }, []);
+
+  useEffect(()=>{
+    if(category){
+      getPosts(currentPage, category)
+      .then((resp)=>{setPostList(resp.data)})
+      .catch((err)=>{console.log(err)})
+    }
+  }, [category])
+
+  const renderPagenation = () => {
+    const PaginationItems = [];
+    const MaxPageNum = Math.floor(totalNum/PostsPerPage);
+    for(let i = 1 ; i<= MaxPageNum ; i++) {
+      <PaginationItem>
+        <PaginationLink activate={currentPage===i} onClick={()=>{setCurrentPage(i)}}>{i}</PaginationLink>
+      </PaginationItem>
+    }
+    return PaginationItems
+  }
+
+
   return (
     <div className="wrapper" style={{ marginBottom: "0px" }}>
       <div className="page-header">
@@ -78,77 +129,41 @@ const Posts = () => {
               </CardHeader>
               <Nav className="justify-content-center ">
                 <NavItem active>
-                  <NavLink href="#">Category1</NavLink>
+                  <NavLink onClick={()=>{setCategory("Category1")}}>Category1</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="#">Category2</NavLink>
+                  <NavLink onClick={()=>{setCategory("Category2")}}>Category2</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="#">Category3</NavLink>
+                  <NavLink onClick={()=>{setCategory("Category3")}}>Category3</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="#" >
-                  Category4
-                  </NavLink>
+                  <NavLink onClick={()=>{setCategory("Category4")}}>Category4</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink onClick={()=>{setCategory("Category5")}}>Category5</NavLink>
                 </NavItem>
               </Nav>
               <CardBody className="feed-box" style={{width:"100%", height:"100%", overflow:"auto"}}>
                 <div className="grid-container">
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
-                  <div className="grid-item item">
-                    <img src="https://item.kakaocdn.net/do/9d4a4d8368feb0ea31d42724f36156f5f604e7b0e6900f9ac53a43965300eb9a"></img>
-                  </div>
+                  {postList.map((post)=>{
+                    <PostThumnail src={post.thumnail} key={post.id}></PostThumnail>
+                  })}
                 </div>
               </CardBody>
+
               <CardFooter>
                 <Pagination className="">
                   <PaginationItem>
-                    <PaginationLink href="#">Previous</PaginationLink>
+                    <PaginationLink onClick={()=>{
+                      if(currentPage!==1) setCurrentPage(prev=>prev-1)
+                    }}>Previous</PaginationLink>
                   </PaginationItem>
+                  {renderPagenation()}
                   <PaginationItem>
-                    <PaginationLink href="#">1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem active={true}>
-                    <PaginationLink href="#">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">Next</PaginationLink>
+                    <PaginationLink onClick={()=>{
+                      if(currentPage!==Math.floor(totalNum/PostsPerPage)) setCurrentPage(prev=>prev+1)
+                    }}>Next</PaginationLink>
                   </PaginationItem>
                 </Pagination>
               </CardFooter>

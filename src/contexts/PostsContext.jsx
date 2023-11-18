@@ -1,23 +1,32 @@
-import React, { useContext, useState } from 'react'
+import axios from 'axios';
+import React, { createContext, useState } from 'react'
 
-export const PostsContext = useContext();
+export const PostsContext = createContext();
 const ServerURL = "http://localhost:8080"
 
 
-const PostsContext = (props) => {
+const PostContextProvider = (props) => {
     const [postList, setPostList] = useState([]);
-    const [totlaNum, setTotalNum] = useState(0);
+    const [totalNum, setTotalNum] = useState(0);
     const [currentPage , setCurrentPage] = useState(1);
+    const [category, setCategory] = useState();
 
-    const getPost = (id) => {
+    const getPost = async (id) => {
+      return await axios.get(ServerURL + `/${id}`)
     }
     
-    const getPosts = (pageNo, category) => {
+    const getPosts = async (pageNo, category) => {
+      return await axios.get(ServerURL+"/")
     }
 
+    const getTotalNum = async () => {
+      return await axios.get(ServerURL+"/")
+    }
+
+
     const value = {
-        states : {postList,totlaNum,currentPage},
-        actions : {setPostList,setTotalNum,setCurrentPage,getPost,getPosts}
+        states : {postList,totalNum,currentPage,category},
+        actions : {setPostList,setTotalNum,setCurrentPage,getPost,getPosts,getTotalNum,setCategory}
     }
     
   return (
@@ -25,4 +34,4 @@ const PostsContext = (props) => {
   )
 }
 
-export default PostsContext
+export default PostContextProvider

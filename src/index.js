@@ -23,24 +23,28 @@ import "assets/css/nucleo-icons.css";
 import "assets/scss/blk-design-system-react.scss";
 import "assets/demo/demo.css";
 
-
 import LandingPage from "views/examples/LandingPage.js";
 import RegisterPage from "views/examples/RegisterPage.js";
 import ProfilePage from "views/examples/ProfilePage.js";
 import MainLayout from "pages/layouts/mainLayout";
 import Index from "pages/Index";
 import Posts from "pages/Posts";
+import PostContextProvider from "contexts/PostsContext";
+import PostDetailComponents from "components/Post/PostDetailComponents";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route path="" element={<Index />} />
-        <Route path="/posts" element={<Posts />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+    <PostContextProvider>
+      <Routes>
+        <Route path="/" element={<MainLayout />}>
+          <Route path="" element={<Index />} />
+          <Route path="/posts" element={<Posts />} />
+          <Route path="/posts/:id" element={<PostDetailComponents />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </PostContextProvider>
   </BrowserRouter>
 );
