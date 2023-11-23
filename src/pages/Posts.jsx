@@ -1,9 +1,7 @@
 import axios from "axios";
 import PostThumnail from "components/Post/PostThumnail";
 import { PostsContext } from "contexts/PostsContext";
-import { error } from "jquery";
 import React, { useContext, useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import {
   Button,
@@ -24,7 +22,6 @@ import {
   PaginationLink,
   Row,
 } from "reactstrap";
-import bigChartData from "variables/charts.js";
 
 const PostsPerPage = 12;
 
@@ -129,19 +126,19 @@ const Posts = () => {
               </CardHeader>
               <Nav className="justify-content-center ">
                 <NavItem active>
-                  <NavLink onClick={()=>{setCategory("Category1")}}>Category1</NavLink>
+                  <NavLink onClick={()=>{setCategory("Category1")}} style={{cursor:"pointer"}}>Category1</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={()=>{setCategory("Category2")}}>Category2</NavLink>
+                  <NavLink onClick={()=>{setCategory("Category2")}} style={{cursor:"pointer"}}>Category2</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={()=>{setCategory("Category3")}}>Category3</NavLink>
+                  <NavLink onClick={()=>{setCategory("Category3")}} style={{cursor:"pointer"}}>Category3</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={()=>{setCategory("Category4")}}>Category4</NavLink>
+                  <NavLink onClick={()=>{setCategory("Category4")}} style={{cursor:"pointer"}}>Category4</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={()=>{setCategory("Category5")}}>Category5</NavLink>
+                  <NavLink onClick={()=>{setCategory("Category5")}} style={{cursor:"pointer"}}>Category5</NavLink>
                 </NavItem>
               </Nav>
               <CardBody className="feed-box" style={{width:"100%", height:"100%", overflow:"auto"}}>
