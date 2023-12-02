@@ -1,7 +1,7 @@
 import axios from "axios";
 import PostThumnail from "components/Post/PostThumnail";
-import { PostsContext } from "contexts/PostsContext";
 import React, { useContext, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   Button,
@@ -27,30 +27,13 @@ const PostsPerPage = 12;
 
 const Posts = () => {
   const navigate = useNavigate();
-  const {
-    states : {postList,totalNum,currentPage,category},
-    actions : {setPostList,setTotalNum,setCurrentPage,getPost,getPosts,getTotalNum,setCategory}
-} = useContext(PostsContext);
+  const [category, setCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const { postList, totalNum } = useSelector((state)=> state.postReducer )
   
 
   useEffect(() => {
     document.body.classList.toggle("landing-page");
-
-    getTotalNum()
-    .then((resp)=>{
-      setTotalNum(resp.data);
-    })
-    .catch((err)=>{
-      console.log(err);
-    });
-
-    getPosts(currentPage)
-    .then((resp)=>{
-      setPostList(resp.data);
-    })
-    .catch((err)=>{
-      console.log(err);
-    });    
 
     return function cleanup() {
       document.body.classList.toggle("landing-page");
@@ -58,11 +41,6 @@ const Posts = () => {
   }, []);
 
   useEffect(()=>{
-    if(category){
-      getPosts(currentPage, category)
-      .then((resp)=>{setPostList(resp.data)})
-      .catch((err)=>{console.log(err)})
-    }
   }, [category])
 
   const renderPagenation = () => {

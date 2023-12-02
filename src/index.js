@@ -26,14 +26,15 @@ import "assets/demo/demo.css";
 import MainLayout from "pages/layouts/mainLayout";
 import Index from "pages/Index";
 import Posts from "pages/Posts";
-import PostContextProvider from "contexts/PostsContext";
 import PostDetailComponents from "components/Post/PostDetailComponents";
+import { Provider } from "react-redux";
+import store from "redux/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <BrowserRouter>
-    <PostContextProvider>
+    <Provider store={store}>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route path="" element={<Index />} />
@@ -42,6 +43,6 @@ root.render(
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
-    </PostContextProvider>
+    </Provider>
   </BrowserRouter>
 );
