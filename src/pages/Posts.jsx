@@ -28,7 +28,7 @@ const PostsPerPage = 12;
 const Posts = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
+  const [page, setPage] = useState(0);
   const { postList, totalNum } = useSelector((state)=> state.postReducer )
   
 
@@ -48,7 +48,7 @@ const Posts = () => {
     const MaxPageNum = Math.floor(totalNum/PostsPerPage);
     for(let i = 1 ; i<= MaxPageNum ; i++) {
       <PaginationItem>
-        <PaginationLink activate={currentPage===i} onClick={()=>{setCurrentPage(i)}}>{i}</PaginationLink>
+        <PaginationLink activate={page===i} onClick={()=>{setPage(i)}}>{i}</PaginationLink>
       </PaginationItem>
     }
     return PaginationItems
@@ -131,13 +131,13 @@ const Posts = () => {
                 <Pagination className="">
                   <PaginationItem>
                     <PaginationLink onClick={()=>{
-                      if(currentPage!==1) setCurrentPage(prev=>prev-1)
+                      if(page!==1) setPage(prev=>prev-1)
                     }}>Previous</PaginationLink>
                   </PaginationItem>
                   {renderPagenation()}
                   <PaginationItem>
                     <PaginationLink onClick={()=>{
-                      if(currentPage!==Math.floor(totalNum/PostsPerPage)) setCurrentPage(prev=>prev+1)
+                      if(page!==Math.floor(totalNum/PostsPerPage)) setPage(prev=>prev+1)
                     }}>Next</PaginationLink>
                   </PaginationItem>
                 </Pagination>

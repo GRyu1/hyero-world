@@ -13,10 +13,11 @@ const postSlice = createSlice({
         builder.addCase(ping.pending, (state)=>{
             state.isLoading=true;
         })
-        builder.addCase(ping.fulfiled, (state,action)=>{
-            console.log(action)
+        builder.addCase(ping.fulfilled, (state,action)=>{
+            console.log(action);
             state.isLoading=false;
-            state.pong = action.payload === "pong"
+            console.log(action.payload === "pong");
+            state.pong = action.payload === "pong";
         })
         builder.addCase(ping.rejected, (state)=>{
             state.isLoading=false;

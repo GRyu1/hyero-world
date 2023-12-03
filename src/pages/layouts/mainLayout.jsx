@@ -6,13 +6,17 @@ import { Outlet } from 'react-router-dom'
 import { ping } from 'redux/postThunk'
 
 const MainLayout = () => {
-  const { pong } = useSelector((state=>postReducer));
+  const { pong } = useSelector((state)=>state.postReducer);
   const dispatch = useDispatch();
 
-  useEffect(async ()=>{
-    dispatch(ping());
-    if(pong) console.log("pong");
-  },[])
+  useEffect(()=>{
+    if(!pong){
+      dispatch(ping());
+    }
+    else {
+      console.log("pong");
+    }
+  },[pong])
 
     
   return (
