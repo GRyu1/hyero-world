@@ -1,13 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { getPostListByPageNo } from 'redux/post/postThunk';
+import PostThumnail from './PostThumnail';
 
 const PostListComponents = () => {
-  const [page , setPage] = useState(0);
-  const [category, setCategory] = useState('');
-  useEffect(()=>{
+  const dispatch = useDispatch();
+  const [category, setCategory] = useState("");
+  const [page, setPage] = useState(0);
+  const { postList , totalNum } = useSelector((state)=> state.postReducer );
 
-  },[category, page])
+  useEffect(()=>{
+    dispatch(getPostListByPageNo(page))
+    console.log(postList);
+  },[category, page]);
+
   return (
-    <div>PostListComponents</div>
+    <>
+      {postList && postList.map((post,idx)=>{
+        return <PostThumnail key={idx} src={post.thumbnailURL}></PostThumnail>
+      })}
+    </>
   )
 }
 

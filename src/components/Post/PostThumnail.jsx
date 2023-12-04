@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const PostThumnail = (src) => {
+const PostThumnail = ({src}) => {
 
   return (
     <div className="grid-item item">

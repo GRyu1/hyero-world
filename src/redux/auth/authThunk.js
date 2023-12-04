@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const SERVER_BASE_URL = "http://localhost:8080";
 

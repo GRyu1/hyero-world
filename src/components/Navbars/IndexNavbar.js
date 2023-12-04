@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import AuthComponents from "components/Auth/AuthComponents";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // reactstrap components
@@ -216,57 +217,16 @@ export default function IndexNavbar() {
               </button>
             </CardHeader>
             <CardBody>
-              <InputGroup className="input-lg">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    <i className="tim-icons icon-single-02" />
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input placeholder="아이디" type="text" />
-              </InputGroup>
-              <InputGroup className="input-lg">
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    <i className="tim-icons icon-caps-small" />
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input placeholder="비밀번호" type="password" />
-              </InputGroup>
+              <div style={{display:"flex", justifyContent:"center", alignItems:"center" ,flexDirection:"column"}}>
+                <h2>KAKAO로 인증하기</h2>
+                <h4 style={{margin:"0px"}}>소셜 로그인은 신원 인증으로만 사용되고,</h4>
+                <h4 > DB에 저장되지 않습니다.</h4>
+                <AuthComponents></AuthComponents>
+              </div>
+              
             </CardBody>
             <CardFooter className="text-center">
-              <Button
-                block
-                className="btn-round"
-                color="primary"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-                size="lg"
-              >
-                Login
-              </Button>
             </CardFooter>
-            <div className="pull-left ml-3 mb-3">
-              <h6>
-                <a
-                  className="link footer-link"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  Login With Kakao
-                </a>
-              </h6>
-            </div>
-            <div className="pull-right mr-3 mb-3">
-              <h6>
-                <a
-                  className="link footer-link"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  Need Help?
-                </a>
-              </h6>
-            </div>
           </Form>
         </Card>
       </Modal>

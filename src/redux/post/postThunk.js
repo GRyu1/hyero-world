@@ -30,6 +30,7 @@ export const getPostListByPageNo = createAsyncThunk("postSlice/getPostListByPage
     const resp = await axios.get(`${SERVER_BASE_URL}/api/post?page=${page}`)
     const status = resp.status
     const data = resp.data
+    console.log(resp);
     return {data, status}
 });
 

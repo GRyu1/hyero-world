@@ -3,7 +3,8 @@ import IndexNavbar from 'components/Navbars/IndexNavbar'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
-import { ping } from 'redux/postThunk'
+import { ping } from 'redux/post/postThunk'
+
 
 const MainLayout = () => {
   const { pong } = useSelector((state)=>state.postReducer);

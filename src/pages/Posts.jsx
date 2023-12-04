@@ -1,7 +1,10 @@
 import axios from "axios";
+import MyPaginationComponents from "components/Post/MyPaginationComponents";
+import PostCategoryComponents from "components/Post/PostCategoryComponents";
+import PostListComponents from "components/Post/PostListComponents";
 import PostThumnail from "components/Post/PostThumnail";
 import React, { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   Button,
@@ -22,15 +25,14 @@ import {
   PaginationLink,
   Row,
 } from "reactstrap";
+import { setCategory } from "redux/post/postSlice";
+import { setPage } from "redux/post/postSlice";
 
 const PostsPerPage = 12;
 
 const Posts = () => {
+  const { totalNum , page , postList } = useSelector((state)=>state.postReducer);
   const navigate = useNavigate();
-  const [category, setCategory] = useState("");
-  const [page, setPage] = useState(0);
-  const { postList, totalNum } = useSelector((state)=> state.postReducer )
-  
 
   useEffect(() => {
     document.body.classList.toggle("landing-page");
@@ -39,20 +41,6 @@ const Posts = () => {
       document.body.classList.toggle("landing-page");
     };
   }, []);
-
-  useEffect(()=>{
-  }, [category])
-
-  const renderPagenation = () => {
-    const PaginationItems = [];
-    const MaxPageNum = Math.floor(totalNum/PostsPerPage);
-    for(let i = 1 ; i<= MaxPageNum ; i++) {
-      <PaginationItem>
-        <PaginationLink activate={page===i} onClick={()=>{setPage(i)}}>{i}</PaginationLink>
-      </PaginationItem>
-    }
-    return PaginationItems
-  }
 
 
   return (
@@ -102,45 +90,15 @@ const Posts = () => {
                   Posts-Feed
                 </h1>
               </CardHeader>
-              <Nav className="justify-content-center ">
-                <NavItem active>
-                  <NavLink onClick={()=>{setCategory("Category1")}} style={{cursor:"pointer"}}>Category1</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={()=>{setCategory("Category2")}} style={{cursor:"pointer"}}>Category2</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={()=>{setCategory("Category3")}} style={{cursor:"pointer"}}>Category3</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={()=>{setCategory("Category4")}} style={{cursor:"pointer"}}>Category4</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink onClick={()=>{setCategory("Category5")}} style={{cursor:"pointer"}}>Category5</NavLink>
-                </NavItem>
-              </Nav>
+              <PostCategoryComponents></PostCategoryComponents>
               <CardBody className="feed-box" style={{width:"100%", height:"100%", overflow:"auto"}}>
                 <div className="grid-container">
-                  {postList.map((post)=>{
-                    <PostThumnail src={post.thumnail} key={post.id}></PostThumnail>
-                  })}
+                  <PostListComponents></PostListComponents>
                 </div>
               </CardBody>
 
               <CardFooter>
-                <Pagination className="">
-                  <PaginationItem>
-                    <PaginationLink onClick={()=>{
-                      if(page!==1) setPage(prev=>prev-1)
-                    }}>Previous</PaginationLink>
-                  </PaginationItem>
-                  {renderPagenation()}
-                  <PaginationItem>
-                    <PaginationLink onClick={()=>{
-                      if(page!==Math.floor(totalNum/PostsPerPage)) setPage(prev=>prev+1)
-                    }}>Next</PaginationLink>
-                  </PaginationItem>
-                </Pagination>
+                <MyPaginationComponents></MyPaginationComponents>
               </CardFooter>
             </Card>
           </Row>
