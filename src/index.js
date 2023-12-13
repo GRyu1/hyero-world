@@ -29,6 +29,8 @@ import Posts from "pages/Posts";
 import PostDetailComponents from "components/Post/PostDetailComponents";
 import { Provider } from "react-redux";
 import store from "redux/store";
+import AuthComponents from "components/Auth/AuthComponents";
+import PostAddComponents from "components/Post/PostAddComponents";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -40,6 +42,8 @@ root.render(
           <Route path="" element={<Index />} />
           <Route path="/posts" element={<Posts />} />
           <Route path="/posts/:id" element={<PostDetailComponents />} />
+          <Route path="/posts/add" element={<PostAddComponents />} />
+          <Route path="signin" element={<AuthComponents/>}/>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

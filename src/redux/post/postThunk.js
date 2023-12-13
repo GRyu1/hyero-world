@@ -28,8 +28,8 @@ export const deletePost = createAsyncThunk("postSlice/deletePost");
 
 export const getPostListByPageNo = createAsyncThunk("postSlice/getPostListByPageNo", async (page) => {
     const resp = await axios.get(`${SERVER_BASE_URL}/api/post?page=${page}`)
-    const status = resp.status
-    const data = resp.data
+    const status = resp.status;
+    const data = resp.data;
     console.log(resp);
     return {data, status}
 });

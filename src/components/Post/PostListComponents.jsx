@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostListByPageNo } from 'redux/post/postThunk';
 import PostThumnail from './PostThumnail';
+import { Link } from 'react-router-dom';
 
 const PostListComponents = () => {
   const dispatch = useDispatch();
@@ -16,8 +17,8 @@ const PostListComponents = () => {
 
   return (
     <>
-      {postList && postList.map((post,idx)=>{
-        return <PostThumnail key={idx} src={post.thumbnailURL}></PostThumnail>
+      {postList && postList.slice().reverse().map((post,idx)=>{
+        return <Link to={`/posts/${post.id}`} state={post}><PostThumnail key={idx} src={post.thumbnailURL}></PostThumnail></Link>
       })}
     </>
   )

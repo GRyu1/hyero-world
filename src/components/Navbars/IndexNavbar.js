@@ -16,7 +16,9 @@
 
 */
 import AuthComponents from "components/Auth/AuthComponents";
-import React, { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 // reactstrap components
 import {
@@ -48,21 +50,30 @@ import {
   CardFooter,
   Input,
 } from "reactstrap";
-
+import { setIsOwner } from "redux/auth/authSlice";
+import { setIsLogin } from "redux/auth/authSlice";
 
 export default function IndexNavbar() {
-  const [modalLogin , setModalLogin] = useState(false);
+  const dispatch = useDispatch();
+  const [hover , setHover]  = useState(false);
+  const [modalLogin, setModalLogin] = useState(false);
   const [collapseOpen, setCollapseOpen] = React.useState(false);
   const [collapseOut, setCollapseOut] = React.useState("");
   const [color, setColor] = React.useState("navbar-transparent");
   const navigate = useNavigate();
+  const { isLogin , isOwner } = useSelector((state) => state.authReducer);
+
   React.useEffect(() => {
     window.addEventListener("scroll", changeColor);
     return function cleanup() {
       window.removeEventListener("scroll", changeColor);
     };
   }, []);
-  
+
+  useEffect(()=>{
+    console.log(isLogin)
+  },[isLogin])
+
   const changeColor = () => {
     if (
       document.documentElement.scrollTop > 99 ||
@@ -181,28 +192,58 @@ export default function IndexNavbar() {
                 <p className="d-lg-none d-xl-none">Notion</p>
               </NavLink>
             </NavItem>
-
-            <NavItem>
-              <Button
-                className="nav-link d-none d-lg-block"
-                color="primary"
-                data-target="#loginModal"
-                data-toggle="modal"
-                onClick={()=>setModalLogin((prev)=>!prev)}
-              >
-                <i className="tim-icons icon-lock-circle" /> Login
-              </Button>
-            </NavItem>
+            {isOwner ? <NavItem>
+              <Link to={'/posts/add'}>
+              <Button>블로그 쓰기</Button>
+              </Link>
+            </NavItem> : ""}
+            {isLogin ? (
+              <NavItem>
+                <Button
+                  className="nav-link d-none d-lg-block"
+                  color="primary"
+                  data-target="#loginModal"
+                  data-toggle="modal"
+                  onClick={() => {
+                    dispatch(setIsLogin(false));
+                    dispatch(setIsOwner(false));
+                    sessionStorage.removeItem("accessToken");
+                  }}
+                  onMouseEnter={()=>{setHover(true)}}
+                  onMouseLeave={()=>{setHover(false)}}
+                >
+                  <i className="tim-icons icon-lock-circle" /> {hover?"LOGOUT":jwtDecode(sessionStorage.getItem('accessToken')).username}
+                </Button>
+              </NavItem>
+            ) : (
+              <NavItem>
+                <Button
+                  className="nav-link d-none d-lg-block"
+                  color="primary"
+                  data-target="#loginModal"
+                  data-toggle="modal"
+                  onClick={() => setModalLogin((prev) => !prev)}
+                >
+                  <i className="tim-icons icon-lock-circle" /> Login
+                </Button>
+              </NavItem>
+            )}
           </Nav>
         </Collapse>
       </Container>
       {/* Login Modal */}
       <Modal
         isOpen={modalLogin}
-        toggle={()=>setModalLogin((prev)=>!prev)}
+        toggle={() => setModalLogin((prev) => !prev)}
         modalClassName="modal-login"
       >
-        <Card className="card-login" style={{marginBottom:"0px", border:"1px solid rgba(225, 78, 202, 0.8)"}}>
+        <Card
+          className="card-login"
+          style={{
+            marginBottom: "0px",
+            border: "1px solid rgba(225, 78, 202, 0.8)",
+          }}
+        >
           <Form action="" className="form" method="">
             <CardHeader>
               <CardTitle tag="h4">Login</CardTitle>
@@ -211,22 +252,29 @@ export default function IndexNavbar() {
                 className="close"
                 data-dismiss="modal"
                 type="button"
-                onClick={()=>setModalLogin((prev)=>!prev)}
+                onClick={() => setModalLogin((prev) => !prev)}
               >
                 <i className="tim-icons icon-simple-remove" />
               </button>
             </CardHeader>
             <CardBody>
-              <div style={{display:"flex", justifyContent:"center", alignItems:"center" ,flexDirection:"column"}}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
                 <h2>KAKAO로 인증하기</h2>
-                <h4 style={{margin:"0px"}}>소셜 로그인은 신원 인증으로만 사용되고,</h4>
-                <h4 > DB에 저장되지 않습니다.</h4>
+                <h4 style={{ margin: "0px" }}>
+                  소셜 로그인은 신원 인증으로만 사용되고,
+                </h4>
+                <h4> DB에 저장되지 않습니다.</h4>
                 <AuthComponents></AuthComponents>
               </div>
-              
             </CardBody>
-            <CardFooter className="text-center">
-            </CardFooter>
+            <CardFooter className="text-center"></CardFooter>
           </Form>
         </Card>
       </Modal>

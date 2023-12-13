@@ -4,6 +4,7 @@ import Basics from "views/IndexSections/Basics";
 import Navbars from "views/IndexSections/Navbars";
 
 const Index = () => {
+  
   useEffect(() => {
     document.body.classList.toggle("index-page");
     // Specify how to clean up after this effect:
